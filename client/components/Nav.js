@@ -5,6 +5,18 @@ import Image from 'next/image'
 import { useState,useEffect } from 'react'
 import {signIn,signOut,useSession,getProviders} from 'next-auth/react'
 const Nav = () => {
+  const [provider,setProvider]=useState(null)
+  const {data:session}=useSession()
+  console.log(session)
+  useEffect(()=>{
+const setProvidr=async ()=>{
+  const response=await getProviders()
+  setProvider(response)
+  console.log(response)
+}
+setProvidr()
+
+  },[])
   return (
     <header className="text-gray-400 bg-gray-900 body-font">
   <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
@@ -32,6 +44,11 @@ const Nav = () => {
       <Link href='l1' className="mr-5 hover:text-white">Second Link</Link>
       <Link href='l1' className="mr-5 hover:text-white">Third Link</Link>
       <Link href='l1' className="mr-5 hover:text-white">Fourth Link</Link>
+      {provider&&Object.values(provider).map((provider1)=>(
+        <button type="button"
+        key={provider1.name}
+        onClick={()=>signIn(provider1.id)}>signinggg</button>
+    ))}
     </nav>
     <button className="inline-flex items-center bg-gray-800 border-0 py-1 px-3 focus:outline-none hover:bg-gray-700 rounded text-base mt-4 md:mt-0">
       Button

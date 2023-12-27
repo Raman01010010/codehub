@@ -1,8 +1,20 @@
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    experimental: {
+      appDir: true,
+      serverComponentsExternalPackages: ["mongoose"],
+    },
     images: {
-        domains: ['nextjs.org'],
-      },
-}
-
-module.exports = nextConfig
+      domains: ['lh3.googleusercontent.com','nextjs.org'],
+    },
+    webpack(config) {
+      config.experiments = {
+        ...config.experiments,
+        topLevelAwait: true,
+      }
+      return config
+    }
+  }
+  
+  module.exports = nextConfig
