@@ -60,7 +60,7 @@ const secPas=await bcrypt.hash(pwd,salt)
     
        }});
 
-    await sendEmail("",otp5,email,"",email,false)
+    await sendEmail("",otp5,email,"",email)
 
     res.sendStatus(201)
     console.log("updated")
