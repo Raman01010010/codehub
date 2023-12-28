@@ -20,8 +20,26 @@ const DrawingCanvas = () => {
   const startDrawing = (event) => {
     setIsDrawing(true);
     const { offsetX, offsetY } = event.nativeEvent;
-    setStartX(offsetX);
-    setStartY(offsetY);
+
+    switch (tool) {
+      case 'pencil':
+      case 'eraser':
+      case 'star':
+        setStartX(offsetX);
+        setStartY(offsetY);
+        break;
+      case 'line':
+      case 'rectangle':
+      case 'triangle':
+      case 'circle':
+        setStartX(offsetX);
+        setStartY(offsetY);
+        setEndX(offsetX);
+        setEndY(offsetY);
+        break;
+      default:
+        break;
+    }
   };
 
   const draw = (event) => {
@@ -77,9 +95,49 @@ const DrawingCanvas = () => {
         context.arc(startX, startY, radius, 0, 2 * Math.PI);
         context.stroke();
         break;
+      case 'star':
+        redrawCanvas(shapes); // Redraw existing shapes
+        setEndX(offsetX);
+        setEndY(offsetY);
+        drawStar(startX, startY, Math.max(Math.abs(endX - startX), Math.abs(endY - startY)));
+        break;
       default:
         break;
     }
+  };
+
+  const drawStar = (x, y, size) => {
+    const spikes = 5; // Number of spikes for the star
+    const rotation = (Math.PI / spikes) * 2; // Constant internal angle
+
+    let cx = x;
+    let cy = y;
+    let xCoords = [];
+    let yCoords = [];
+    let outerRadius = size / 2;
+    let innerRadius = outerRadius / 2;
+
+    let rot = -Math.PI / 2; // Start drawing from the top
+
+    for (let i = 0; i < spikes; i++) {
+      xCoords.push(cx + Math.cos(rot) * outerRadius);
+      yCoords.push(cy + Math.sin(rot) * outerRadius);
+      rot += rotation;
+
+      xCoords.push(cx + Math.cos(rot) * innerRadius);
+      yCoords.push(cy + Math.sin(rot) * innerRadius);
+      rot += rotation;
+    }
+
+    context.beginPath();
+    context.moveTo(xCoords[0], yCoords[0]);
+
+    for (let j = 1; j < xCoords.length; j++) {
+      context.lineTo(xCoords[j], yCoords[j]);
+    }
+
+    context.closePath();
+    context.stroke();
   };
 
   const stopDrawing = () => {
@@ -98,6 +156,9 @@ const DrawingCanvas = () => {
       case 'circle':
         const radius = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
         setShapes([...shapes, { type: 'circle', startX, startY, radius }]);
+        break;
+      case 'star':
+        setShapes([...shapes, { type: 'star', startX, startY, size: Math.max(Math.abs(endX - startX), Math.abs(endY - startY)) }]);
         break;
       default:
         break;
@@ -145,6 +206,9 @@ const DrawingCanvas = () => {
           context.arc(shape.startX, shape.startY, shape.radius, 0, 2 * Math.PI);
           context.stroke();
           break;
+        case 'star':
+          drawStar(shape.startX, shape.startY, shape.size);
+          break;
         default:
           break;
       }
@@ -164,6 +228,7 @@ const DrawingCanvas = () => {
         <option value="rectangle">Rectangle</option>
         <option value="triangle">Triangle</option>
         <option value="circle">Circle</option>
+        <option value="star">Star</option>
       </select>
       <canvas
         ref={canvasRef}
