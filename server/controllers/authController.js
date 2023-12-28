@@ -18,7 +18,9 @@ console.log(user)
             {
                 "UserInfo": {
                     "email": foundUser.email,
-                    "roles": roles
+                    "roles": roles,
+                    "userid":foundUser._id,
+                    
                 }
             },
             process.env.ACCESS_TOKEN_SECRET,
@@ -54,7 +56,7 @@ console.log(user)
         // Send authorization roles and access token to user
         res.json({ 
             //roles, 
-            accessToken });
+            accessToken,"username":foundUser.username,"email":foundUser.email,"picture":foundUser.picture });
 
     } else {
         res.sendStatus(401);
