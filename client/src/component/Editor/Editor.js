@@ -17,6 +17,7 @@ export default function App() {
     `function add(a, b) {\n  return a + b;\n}`
   );
   const [tree, setTree] = useState({})
+  const [myfile,setMyfile]=useState({"path":""})
   const [showCreateWorkspace, setShowCreateWorkspace] = useState(false);
   const { id } = useParams()
   console.log(id)
@@ -42,13 +43,14 @@ export default function App() {
 
     }
     f()
-  }, [])
+  }, [myfile])
 
 
 
 
 
 function handleFile(e){
+  setMyfile({"path":e})
   const a1 = e.split('/');
   console.log(a1) 
   console.log(e)
@@ -59,6 +61,9 @@ console.log(a2)
    console.log(a3)
    if(a3?.versions?.length===0){
       setCode('//Start Typing')
+   }else{
+      console.log(a3?.versions[a3?.versions?.length-1]?.content)
+      setCode(a3?.versions[a3?.versions?.length-1]?.content)
    }
     // Perform your logic here for a1 size equal to 1
   }else {
@@ -73,8 +78,10 @@ console.log(a2)
 
     if(a4?.versions?.length===0){
       setCode('//Start Typing')
+      console.log("cmnvmcv")
   }else{
-    setCode(a4?.versions[a4?.versions.length-1]?.content)
+    console.log(a4?.versions[a4?.versions?.length-1]?.content)
+    setCode(a4?.versions[a4?.versions?.length-1]?.content)
   }
 }}
 
@@ -108,7 +115,14 @@ console.log(a2)
     );
   }
 
-
+async function handleSave(){ 
+  try{ 
+  const res=await axios.post('/workspace/modifyfile',{id:id,path:myfile.path,content:code})
+  console.log(res)
+  }catch(error){  
+    console.log(error)
+  }
+}
   return (
     <div className="flex  ">
       <div className="w-1/3">
@@ -141,7 +155,7 @@ console.log(a2)
           </div>
           <div style={{fontSize:'4vh'}} className="flex space-x-4">
             <button className="hover:text-gray-300 mx-2"><FontAwesomeIcon icon={faPlay} /></button>
-            <button className="hover:text-gray-300 mx-2"><FontAwesomeIcon icon={faFloppyDisk} /></button>
+            <button onClick={handleSave} className="hover:text-gray-300 mx-2"><FontAwesomeIcon icon={faFloppyDisk} /></button>
             <button className="hover:text-gray-300 mx-2">Edit  </button>
 
           </div>

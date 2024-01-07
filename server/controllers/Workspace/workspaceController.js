@@ -142,13 +142,56 @@ try{
 
 // Modify a file in a workspace
 const modifyFile = async (req, res) => {
-    try {
-        // Your code to modify a file in a workspace goes here
-        // ...
-        res.status(200).json({ message: 'File modified successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to modify file' });
+    const workspaceId = req.body.id;
+        const itemPath = req.body.path;
+       const content=req.body.content // req.body.isFile || false;
+    
+        // Validate input
+        if (!workspaceId || !itemPath) {
+            return res.status(400).json({ error: 'Invalid input' });
+        }
+    
+        // Find the workspace
+        const workspace = await workspaceSchema.findById(workspaceId);
+        if (!workspace) {
+            return res.status(404).json({ error: 'Workspace not found' });
+        }
+    
+        const itemNames = itemPath.split('/').filter(name => name !== ''); // Split path and filter out empty strings
+    
+        // Traverse the file tree to find the location to insert the file or folder
+        let currentFolder = workspace.fileTree;
+        for (const itemName of itemNames.slice(0, -1)) {
+            if (!currentFolder) {
+                currentFolder = { folders: [] };
+            }
+    
+            const folder = currentFolder?.folders.find(f => f.name === itemName);
+            if (!folder) {
+                const newFolder = { name: itemName, files: [], folders: [] };
+                currentFolder.folders.push(newFolder);
+                currentFolder = newFolder;
+            } else {
+                currentFolder = folder;
+            }
+        }
+    
+        // Check if the file or folder already exists
+        const itemName = itemNames[itemNames.length - 1];
+        const existingItem = currentFolder.files.find(file => file.name === itemName) || currentFolder.folders.find(folder => folder.name === itemName);
+    if(!existingItem){
+        res.status(400).json({ message: 'File modified successfully' });
     }
+        if (existingItem) {
+            console.log(existingItem.versions)
+            existingItem.versions.push({content:content,createdAt:Date.now()})
+            await workspace.save();
+            return res.status(200).json( `Item  already exists in the specified folder.` );
+        }
+    
+
+       
+   
 };
 
 module.exports = {

@@ -7,6 +7,7 @@ router.post('/', workspaceController.createWorkspace);
 router.post('/add', workspaceController.addFilesToWorkspace);
 router.post('/getall', workspaceController.getDocuments);
 router.post('/getfile', workspaceController.fetchFile);
+router.post('/modifyfile', workspaceController.modifyFile);
 router.get('/', workspaceController.fetchWorkspaceNamesWithVisibility);
 
 module.exports = router;
