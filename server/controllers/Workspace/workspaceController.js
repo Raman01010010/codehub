@@ -20,7 +20,7 @@ const createWorkspace = async (req, res) => {
 const fetchWorkspaceNamesWithVisibility = async (req, res) => {
     try {
         console.log(req.userid)
-        const workspaces = await workspaceSchema.find({userid:req.userid}, { name: 1, _id: 1})
+        const workspaces = await workspaceSchema.find({userId:req.userid}, { name: 1, _id: 1})
         console.log(workspaces)
         res.status(200).json({ message: 'Workspace names with visibility fetched successfully', workspaces });
     } catch (error) {
@@ -31,15 +31,88 @@ const fetchWorkspaceNamesWithVisibility = async (req, res) => {
 
 
 // Add files to a workspace
-const addFilesToWorkspace = async (req, res) => {
+const addFilesToWorkspace =  async (req, res) => {
     try {
-        // Your code to add files to a workspace goes here
-        // ...
-        res.status(200).json({ message: 'Files added to workspace successfully' });
+        const workspaceId = req.body.Id;
+        const itemPath = req.body.itemPath;
+        const isFile = true//req.body.isFile || false;
+
+        // Validate input
+        if (!workspaceId || !itemPath) {
+            return res.status(400).json({ error: 'Invalid input' });
+        }
+
+        // Find the workspace
+        const workspace = await workspaceSchema.findById(workspaceId);
+        if (!workspace) {
+            return res.status(404).json({ error: 'Workspace not found' });
+        }
+
+        const itemNames = itemPath.split('/').filter(name => name !== ''); // Split path and filter out empty strings
+
+        // Traverse the file tree to find the location to insert the file or folder
+        let currentFolder = workspace.fileTree;
+        for (const itemName of itemNames.slice(0, -1)) {
+             if (!currentFolder) {
+        currentFolder=[];
+    }
+            const folder = currentFolder?.folders.find(f => f.name === itemName);
+            if (!folder) {
+                const newFolder = { name: itemName, files: [], folders: [] };
+                currentFolder.folders.push(newFolder);
+                currentFolder = newFolder;
+            } else {
+                currentFolder = folder;
+            }
+        }
+
+        // Insert the file or folder
+        const newItem = isFile ? { name: itemNames[itemNames.length - 1], versions: [] } : { name: itemNames[itemNames.length - 1], files: [], folders: [] };
+        currentFolder[isFile ? 'files' : 'folders'].push(newItem);
+
+        // Save the updated workspace
+        await workspace.save();
+        
+        res.status(200).json({ message: `Item '${itemPath}' has been successfully added to the workspace.` });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to add files to workspace' });
+        console.error(`Error: ${error.message}`);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+// Get all documents with given user ID and workspace ID
+const getDocuments = async (req, res) => {
+    try {
+        console.log("i am her")
+        const userId = req.userid;
+        const workspaceId = req.body.id;
+console.log(userId,workspaceId)
+        // Validate input
+        if (!userId || !workspaceId) {
+            return res.status(400).json({ error: 'Invalid input' });
+        }
+    
+
+        // Find the workspace
+        const workspace = await workspaceSchema.find({_id:workspaceId,userId:userId});
+        if (!workspace) {
+            return res.status(404).json({ error: 'Workspace not found' });
+        }
+
+        // Find the user's documents in the workspace
+       // const documents = workspace.fileTree.files.filter(file => file.userId === userId);
+
+        // Remove the content field from each document
+        //const documentsWithoutContent = documents.map(({ content, ...rest }) => rest);
+console.log(workspace)
+        res.status(200).json(workspace);
+    } catch (error) {
+        console.error(`Error: ${error.message}`);
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+
 
 // Modify a file in a workspace
 const modifyFile = async (req, res) => {
@@ -56,5 +129,6 @@ module.exports = {
     createWorkspace,
     addFilesToWorkspace,
     modifyFile,
-    fetchWorkspaceNamesWithVisibility
+    fetchWorkspaceNamesWithVisibility,
+    getDocuments
 };

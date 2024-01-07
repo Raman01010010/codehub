@@ -48,7 +48,10 @@ const workspaceSchema = new mongoose.Schema({
         ref: 'user_w',
         required: true
     },
-    fileTree: folderSchema
+    fileTree: {
+        type: folderSchema,
+        default: { name: "root", files: [], folders: [] }
+    }
 });
 
 const Workspace = mongoose.model('Workspace', workspaceSchema);
