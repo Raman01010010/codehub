@@ -245,3 +245,4 @@ const DrawingCanvas = () => {
 };
 
 export default DrawingCanvas;
+

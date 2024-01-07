@@ -18,6 +18,24 @@ connectDB();
 
 app.use(logger)
 
+//require('colors');
+const Diff = require('diff');
+
+const one = 'my beep boop';
+const other = 'beep boob blah';
+
+const diff = Diff.diffChars(one, other);
+
+console.log(diff)
+diff.forEach((part) => {
+  // green for additions, red for deletions
+  // grey for common parts
+  const color = part.added ? 'green' :
+    part.removed ? 'red' : 'grey';
+    console.log(part,color)
+  //process.stderr.write(part.value[color]);
+});
+
 
 
 app.use(cors(corsOption))
