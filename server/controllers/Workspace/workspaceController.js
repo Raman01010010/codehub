@@ -35,27 +35,28 @@ const addFilesToWorkspace =  async (req, res) => {
     try {
         const workspaceId = req.body.Id;
         const itemPath = req.body.itemPath;
-        const isFile = true//req.body.isFile || false;
-
+        const isFile = true; // req.body.isFile || false;
+    
         // Validate input
         if (!workspaceId || !itemPath) {
             return res.status(400).json({ error: 'Invalid input' });
         }
-
+    
         // Find the workspace
         const workspace = await workspaceSchema.findById(workspaceId);
         if (!workspace) {
             return res.status(404).json({ error: 'Workspace not found' });
         }
-
+    
         const itemNames = itemPath.split('/').filter(name => name !== ''); // Split path and filter out empty strings
-
+    
         // Traverse the file tree to find the location to insert the file or folder
         let currentFolder = workspace.fileTree;
         for (const itemName of itemNames.slice(0, -1)) {
-             if (!currentFolder) {
-        currentFolder=[];
-    }
+            if (!currentFolder) {
+                currentFolder = { folders: [] };
+            }
+    
             const folder = currentFolder?.folders.find(f => f.name === itemName);
             if (!folder) {
                 const newFolder = { name: itemName, files: [], folders: [] };
@@ -65,19 +66,28 @@ const addFilesToWorkspace =  async (req, res) => {
                 currentFolder = folder;
             }
         }
-
+    
+        // Check if the file or folder already exists
+        const itemName = itemNames[itemNames.length - 1];
+        const existingItem = currentFolder.files.find(file => file.name === itemName) || currentFolder.folders.find(folder => folder.name === itemName);
+    
+        if (existingItem) {
+            return res.status(400).json({ error: `Item '${itemName}' already exists in the specified folder.` });
+        }
+    
         // Insert the file or folder
-        const newItem = isFile ? { name: itemNames[itemNames.length - 1], versions: [] } : { name: itemNames[itemNames.length - 1], files: [], folders: [] };
+        const newItem = isFile ? { name: itemName, versions: [] } : { name: itemName, files: [], folders: [] };
         currentFolder[isFile ? 'files' : 'folders'].push(newItem);
-
+    
         // Save the updated workspace
         await workspace.save();
-        
+    
         res.status(200).json({ message: `Item '${itemPath}' has been successfully added to the workspace.` });
     } catch (error) {
         console.error(`Error: ${error.message}`);
         res.status(500).json({ error: 'Internal server error' });
     }
+    
 }
 
 // Get all documents with given user ID and workspace ID

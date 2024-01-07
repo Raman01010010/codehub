@@ -90,19 +90,7 @@ export default function App() {
 
 </View>
 
-          <Tree>
-            <Tree.File style={{ color: "blue" }} name="package.json" />
-            <Tree.Folder name="components">
-              <Tree.File name="layout.js" />
-              <Tree.Folder name="footer">
-                <Tree.File name="footer.js" />
-                <Tree.File name="footer-text.js" />
-                <Tree.File name="footer-license.js" />
-              </Tree.Folder>
-              <Tree.File name="header.js" />
-            </Tree.Folder>
-            <Tree.File name="readme.md" />
-          </Tree>
+        
 
         </div>
         <div className="bg-gray-800 border border-blue-500  rounded-lg h-1/2">

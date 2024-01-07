@@ -14,7 +14,8 @@ const versionSchema = new mongoose.Schema({
 const fileSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     versions: [versionSchema],
     isPublic: {
@@ -32,7 +33,8 @@ const fileSchema = new mongoose.Schema({
 const folderSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     files: [fileSchema],
     folders: [this]
