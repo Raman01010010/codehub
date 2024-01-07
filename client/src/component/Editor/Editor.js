@@ -13,6 +13,9 @@ import { Button, Page, Text, Tree } from '@geist-ui/core'
 import { useParams } from "react-router-dom";
 import axiosP from '../../hooks/useAxiosPrivate';
 export default function App() {
+  const [code, setCode] = useState(
+    `function add(a, b) {\n  return a + b;\n}`
+  );
   const [tree, setTree] = useState({})
   const [showCreateWorkspace, setShowCreateWorkspace] = useState(false);
   const { id } = useParams()
@@ -42,12 +45,38 @@ export default function App() {
   }, [])
 
 
-  const [code, setCode] = useState(
-    `function add(a, b) {\n  return a + b;\n}`
-  );
 
 
 
+function handleFile(e){
+  const a1 = e.split('/');
+  console.log(a1) 
+  console.log(e)
+  let a2 = tree.fileTree;
+console.log(a2)
+  if (a1.length === 1) {
+   const a3= a2.files.find((item) => item.name === a1[0]);
+   console.log(a3)
+   if(a3?.versions?.length===0){
+      setCode('//Start Typing')
+   }
+    // Perform your logic here for a1 size equal to 1
+  }else {
+    for(let i=0;i<a1.length-1;i++){
+      let a3= a2.folders.find((item) => item.name === a1[i]);
+      console.log(a3)
+      a2=a3;
+    }
+    console.log(a2)
+    let a4= a2?.files?.find((item) => item.name === a1[a1.length-1]);
+    console.log(a4)
+
+    if(a4?.versions?.length===0){
+      setCode('//Start Typing')
+  }else{
+    setCode(a4?.versions[a4?.versions.length-1]?.content)
+  }
+}}
 
   function View({ tree1 }) {
     if (!tree1) return <div></div>;
@@ -64,7 +93,7 @@ export default function App() {
 
     const it3 = tree1.files?.map((item, index) => (
       <>
-        <Tree.File name={item.name} />
+        <Tree.File name={item.name} onClick={()=>handleFile(item?.path)} />
         {/* Render file-related content here */}
       </>
     ));
@@ -84,8 +113,8 @@ export default function App() {
     <div className="flex  ">
       <div className="w-1/3">
 
-        <div className="w-full h-1/2">
-          <div className="text-lg  flex justify-end  text-white bg-blue-800 rounded-tr-lg rounded-tl-lg">
+        <div className="w-full h-1/2  overflow-x-auto overflow-y-auto">
+          <div className=" text-lg  flex justify-end  text-white bg-blue-800 rounded-tr-lg rounded-tl-lg">
             <button onClick={()=>setShowCreateWorkspace(true)} style={{fontSize:'4vh'}}className="p-4 hover:text-gray-300"><FontAwesomeIcon icon={faPlus} /></button>
           </div>
 

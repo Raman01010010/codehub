@@ -17,6 +17,10 @@ const fileSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    path:{
+        type:String,
+        required:true
+    },
     versions: [versionSchema],
     isPublic: {
         type: Boolean,

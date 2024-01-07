@@ -76,7 +76,8 @@ const addFilesToWorkspace =  async (req, res) => {
         }
     
         // Insert the file or folder
-        const newItem = isFile ? { name: itemName, versions: [] } : { name: itemName, files: [], folders: [] };
+        console.log(itemPath)
+        const newItem = isFile ? { name: itemName, versions: [],path:itemPath } : { path:itemPath,name: itemName, files: [], folders: [] };
         currentFolder[isFile ? 'files' : 'folders'].push(newItem);
     
         // Save the updated workspace
@@ -124,6 +125,21 @@ console.log(workspace)
 
 
 
+const fetchFile=async(req,res)=>{
+const path=req.body.path
+console.log(path)
+const userid=req.userid
+const id=req.body.id
+
+try{
+    const r=await workspaceSchema.find({_id:id,userId:userid})
+    console.log(r)
+
+}catch(error){
+    console.log(error)
+}
+}
+
 // Modify a file in a workspace
 const modifyFile = async (req, res) => {
     try {
@@ -140,5 +156,6 @@ module.exports = {
     addFilesToWorkspace,
     modifyFile,
     fetchWorkspaceNamesWithVisibility,
-    getDocuments
+    getDocuments,
+    fetchFile
 };

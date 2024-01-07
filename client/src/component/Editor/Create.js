@@ -21,6 +21,7 @@ e.preventDefault()
       const res=await axios.post('/workspace/add',{Id:props.id,itemPath:name})
       if(res.status===200){
         console.log('successful')
+        props.set(false);
       }else{
         console.log('failed')
       }

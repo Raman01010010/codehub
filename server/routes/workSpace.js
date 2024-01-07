@@ -6,6 +6,7 @@ const router = express.Router();
 router.post('/', workspaceController.createWorkspace);
 router.post('/add', workspaceController.addFilesToWorkspace);
 router.post('/getall', workspaceController.getDocuments);
+router.post('/getfile', workspaceController.fetchFile);
 router.get('/', workspaceController.fetchWorkspaceNamesWithVisibility);
 
 module.exports = router;
