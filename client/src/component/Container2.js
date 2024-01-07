@@ -4,6 +4,7 @@ import Signin from "./Signin";
 import Dashboard from "./Dashboard";
 import Canvas from "./Canvas";
 import Edito from "./Editor";
+import Create from "./Create/Create";
 export default function Container1(){
     return(<>
     {/* <Dashboard/> */}
@@ -12,6 +13,7 @@ export default function Container1(){
 
           <Route path="/" element={<><Home/></>} />
           <Route path="/code" element={<>  <Edito/></>} />
+          <Route path="/my" element={<>  <Create/></>} />
           <Route path="/signin" element={<><Signin/></>} />
     </Routes>
 

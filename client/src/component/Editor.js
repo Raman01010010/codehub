@@ -1,19 +1,14 @@
 import React, { useState } from "react";
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Page, Text,Tree } from '@geist-ui/core'
 import {
-  faHome,
-  faUserFriends,
-  faEnvelope,
-  faMoneyCheckAlt,
-  faUser,
-  faBell,
-  faSearch,
+
   faFloppyDisk,
   faPlay,
   faPlus
 } from "@fortawesome/free-solid-svg-icons";
+import { Button, Page, Text,Tree } from '@geist-ui/core'
+
 export default function App() {
   const [code, setCode] = useState(
     `function add(a, b) {\n  return a + b;\n}`

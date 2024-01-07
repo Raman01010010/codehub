@@ -50,7 +50,7 @@ app.use('/auth',require('./routes/auth'))
 app.use('/refresh',require('./routes/refresh'))
 app.use(verifyJWT)
 app.use('/user1',require('./routes/userUpdate'))
-
+app.use('/workspace',require('./routes/workSpace'))
 
 app.all('/*',(req,res)=>{
     res.status(404)
