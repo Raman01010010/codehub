@@ -20,7 +20,7 @@ const createWorkspace = async (req, res) => {
 const fetchWorkspaceNamesWithVisibility = async (req, res) => {
     try {
         console.log(req.userid)
-        const workspaces = await workspaceSchema.find({userid:req.userid})
+        const workspaces = await workspaceSchema.find({userid:req.userid}, { name: 1, _id: 1})
         console.log(workspaces)
         res.status(200).json({ message: 'Workspace names with visibility fetched successfully', workspaces });
     } catch (error) {

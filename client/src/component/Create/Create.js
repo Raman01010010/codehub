@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import {
   faDiagramProject,
   faPlus
@@ -94,6 +95,10 @@ ans()
     //onCancel();
     setShowCreateWorkspace(false);
   };
+
+  function handNav(id){
+    navigate(`/workspace/${id}`)
+  }
   return (
     <div style={{ display: 'flex', height: '90vh', overflowX: 'hidden' }}>
       {/* Create New Workspace */}
@@ -136,9 +141,9 @@ ans()
         {/* Display the list of already created workspaces */}
         <div className='flex flex-wrap p-4'>
   {workspaces.map(workspace => (
-    <div key={workspace.id} className='w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/3 p-2'>
+    <div key={workspace._id} onClick={()=>handNav(workspace._id)}className='w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/3 p-2'>
       <div className='flex flex-col items-center justify-between text-gray-800 font-semibold p-2 bg-gradient-to-tr from-blue-800 via-blue-500 hover:from-blue-500 hover:scale-110 hover:to-blue-500 to-blue-200 p rounded-lg'>
-        <FontAwesomeIcon className='text-4xl' icon={faDiagramProject} />
+    <AccountTreeIcon  style={{ fontSize: 80,color:"white" }} />
         <div className='text-sm text-gray-200 mt-2'>{workspace.name.toUpperCase()}</div>
       </div>
     </div>
