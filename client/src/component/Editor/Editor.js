@@ -87,8 +87,12 @@ export default function App() {
 
 
 
-  function handleFile(e) {
-    setMyfile({ "path": e })
+  function handleFile(p) {
+    let e=p.path
+   let id=p.id
+    console.log(p)
+    setMyfile({ "path": e ,"id":id})
+
     const a1 = e.split('/');
     console.log(a1)
     console.log(e)
@@ -140,7 +144,7 @@ export default function App() {
 
     const it3 = tree1.files?.map((item, index) => (
       <>
-        <TreeItem onClick={() => handleFile(item?.path)} key={Math.random()} nodeId={Math.random()} label={<div className="text-xl font-semibold m-2"><DataObjectIcon style={{ fontSize: '5vh' }} />{item.name}</div>}>
+        <TreeItem onClick={() => handleFile({path:item?.path,id:item?._id})} key={Math.random()} nodeId={Math.random()} label={<div className="text-xl font-semibold m-2"><DataObjectIcon style={{ fontSize: '5vh' }} />{item.name}</div>}>
 
         </TreeItem>
 
@@ -161,7 +165,7 @@ export default function App() {
 
   async function handleSave() {
     try {
-      const res = await axios.post('/workspace/modifyfile', { id: id, path: myfile.path, content: code })
+      const res = await axios.post('/workspace/modifyfile', { id: id, path: myfile.path,fileId:myfile.id, content: code })
       console.log(res)
     } catch (error) {
       console.log(error)
