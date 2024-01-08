@@ -1,5 +1,5 @@
 const workspaceSchema=require('../../model/workspaceSchema');
-
+const File=require('../../model/fileSchema')
 
 // Create a new workspace
 const createWorkspace = async (req, res) => {
@@ -7,7 +7,7 @@ const createWorkspace = async (req, res) => {
         const { name, user } = req.body;
 
         // Your code to create a workspace goes here
-        const workspace = await workspaceSchema.create({ name,userId: user });
+        const workspace = await workspaceSchema.create({ name,userId: user })
 
         res.status(200).json({ message: 'Workspace created successfully', workspace });
     } catch (error) {
@@ -21,7 +21,8 @@ const fetchWorkspaceNamesWithVisibility = async (req, res) => {
     try {
         console.log(req.userid)
         const workspaces = await workspaceSchema.find({userId:req.userid}, { name: 1, _id: 1})
-        console.log(workspaces)
+        
+        console.log(workspaces[0].fileTree)
         res.status(200).json({ message: 'Workspace names with visibility fetched successfully', workspaces });
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch workspace names with visibility' });
@@ -34,9 +35,13 @@ const fetchWorkspaceNamesWithVisibility = async (req, res) => {
 const addFilesToWorkspace =  async (req, res) => {
     try {
         const workspaceId = req.body.Id;
+        console.log(workspaceId,'nn')
         const itemPath = req.body.itemPath;
         const isFile = true; // req.body.isFile || false;
-    
+    const r2=await File.find({path:itemPath,workpaceId:workspaceId})
+    if(r2.length>0){
+        return res.status(400).json({ error: `Item '${itemPath}' already exists in the specified folder.` });
+    }
         // Validate input
         if (!workspaceId || !itemPath) {
             return res.status(400).json({ error: 'Invalid input' });
@@ -49,7 +54,7 @@ const addFilesToWorkspace =  async (req, res) => {
         }
     
         const itemNames = itemPath.split('/').filter(name => name !== ''); // Split path and filter out empty strings
-    
+    console.log(itemNames)
         // Traverse the file tree to find the location to insert the file or folder
         let currentFolder = workspace.fileTree;
         for (const itemName of itemNames.slice(0, -1)) {
@@ -77,9 +82,12 @@ const addFilesToWorkspace =  async (req, res) => {
     
         // Insert the file or folder
         console.log(itemPath)
-        const newItem = isFile ? { name: itemName, versions: [],path:itemPath } : { path:itemPath,name: itemName, files: [], folders: [] };
-        currentFolder[isFile ? 'files' : 'folders'].push(newItem);
-    
+        console.log(itemName)
+        const newItem = isFile ? new File({ name: itemName, versions: [],path:itemPath,workpaceId:workspaceId }) : { path:itemPath,name: itemName, files: [], folders: [] };
+       console.log(newItem)
+      await newItem.save()
+        currentFolder[isFile ? 'files' : 'folders'].push(newItem._id);
+    console.log(currentFolder)
         // Save the updated workspace
         await workspace.save();
     
@@ -91,6 +99,17 @@ const addFilesToWorkspace =  async (req, res) => {
     
 }
 
+const populateNested = async (folder) => {
+    await workspaceSchema.populate(folder, {
+        path: 'folders.files',
+        model: 'File'
+      });
+    for (const subfolder of folder.folders) {
+      await populateNested(subfolder);
+    }
+  
+    return folder;
+  };
 // Get all documents with given user ID and workspace ID
 const getDocuments = async (req, res) => {
     try {
@@ -105,7 +124,7 @@ console.log(userId,workspaceId)
     
 
         // Find the workspace
-        const workspace = await workspaceSchema.find({_id:workspaceId,userId:userId});
+        const workspace = await workspaceSchema.find({_id:workspaceId,userId:userId}).populate('fileTree.files');;
         if (!workspace) {
             return res.status(404).json({ error: 'Workspace not found' });
         }
@@ -115,7 +134,10 @@ console.log(userId,workspaceId)
 
         // Remove the content field from each document
         //const documentsWithoutContent = documents.map(({ content, ...rest }) => rest);
-console.log(workspace)
+console.log(workspace[0].fileTree.files)
+const populatedWorkspace = await populateNested(workspace[0].fileTree);
+console.log(populatedWorkspace)
+workspace[0].fileTree=populatedWorkspace
         res.status(200).json(workspace);
     } catch (error) {
         console.error(`Error: ${error.message}`);
