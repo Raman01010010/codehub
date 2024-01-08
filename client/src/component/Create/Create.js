@@ -108,8 +108,12 @@ ans()
             <FontAwesomeIcon className='hover:scale-150' style={{ height: '20vh' }} icon={faPlus} /> Create New Workspace
           </button>
         ) : (
-          <> <div style={{ backgroundColor }} className="border-4 shadow-4xl border-gray-100 rounded-xl fixed top-1/2 left-1/2 w-1/2 h-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 shadow-md">
-            <h2 className="text-lg font-semibold mb-4">Enter Workspace Name</h2>
+          <> <div  className=" h-1/2 bg-gradient-to-br from-purple-800 via-purple-800 to-indigo-200 shadow-4xl border-gray-100 rounded-xl fixed top-1/2 left-1/2 w-1/2 h-3/4 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 shadow-md">
+ <div className='flex m-4 justify-center'>
+ <AccountTreeIcon className='bg-purple-800 rounded-2xl' style={{ fontSize:'20vh',color:"white" }} />
+ </div>
+ 
+            <h2 className="flex justify-center text-white font-sans text-4xl font-semibold mb-4">Create New Workspace</h2>
             <input
               type="text"
               placeholder="Workspace Name"
@@ -117,16 +121,16 @@ ans()
               onChange={handleNameChange}
               className="w-full p-2 mb-4 border rounded-md"
             />
-            <div className="flex justify-between">
+            <div className="flex justify-center">
               <button
                 onClick={handleSave}
-                className="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer"
+                className="px-4 py-2 m-4 bg-blue-500 text-4xl text-white rounded-md cursor-pointer"
               >
                 Save
               </button>
               <button
                 onClick={handleCancel}
-                className="px-4 py-2 bg-gray-400 text-white rounded-md cursor-pointer"
+                className="px-4 py-2 m-4 bg-gray-400 text-4xl text-white rounded-md cursor-pointer"
               >
                 Cancel
               </button>
