@@ -35,7 +35,7 @@ const fetchWorkspaceNamesWithVisibility = async (req, res) => {
 const addFilesToWorkspace =  async (req, res) => {
     try {
         const workspaceId = req.body.Id;
-     
+     const userid=req.userid
         console.log(workspaceId,'nn')
         const itemPath = req.body.itemPath;
         const isFile = true; // req.body.isFile || false;
@@ -84,7 +84,7 @@ const addFilesToWorkspace =  async (req, res) => {
         // Insert the file or folder
         console.log(itemPath)
         console.log(itemName)
-        const newItem = isFile ? new File({ name: itemName, versions: [],path:itemPath,workpaceId:workspaceId }) : { path:itemPath,name: itemName, files: [], folders: [] };
+        const newItem = isFile ? new File({ name: itemName, versions: [],path:itemPath,workpaceId:workspaceId,allowedUserIds:[userid] }) : { path:itemPath,name: itemName, files: [], folders: [] };
        console.log(newItem)
       await newItem.save()
         currentFolder[isFile ? 'files' : 'folders'].push(newItem._id);
@@ -148,25 +148,39 @@ workspace[0].fileTree=populatedWorkspace
 
 
 
-const fetchFile=async(req,res)=>{
-const path=req.body.path
-console.log(path)
-const userid=req.userid
-const id=req.body.id
+const fetchFile = async (req, res) => {
+  //  console.log(path);
+  console.log(req.body)
+    const userid = req.userid;
+    const id = req.body.id;
 
-try{
-    const r=await workspaceSchema.find({_id:id,userId:userid})
-    console.log(r)
-
-}catch(error){
-    console.log(error)
-}
-}
+    console.log(id)
+    
+    try {
+        const result = await File.find({ _id: id, allowedUserIds: userid }).populate('versions.createdBy');
+        console.log(result);
+    
+        if (result.length > 0) {
+            // Document found where _id matches and allowedUserIds includes userid
+            // You can perform additional actions here if needed
+            res.status(200).json({ message: 'Document found', data: result });
+        } else {
+            // No document found
+            res.status(404).json({ message: 'Document not found' });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+    
+};
 
 // Modify a file in a workspace
 const modifyFile = async (req, res) => {
     console.log(req.body)
     const workspaceId = req.body.id;
+    const userid=req.userid
+    console.log(userid)
 
     const fileId=req.body.fileId
         const itemPath = req.body.path;
@@ -182,7 +196,7 @@ const modifyFile = async (req, res) => {
       if(file.length===0){
           return res.status(400).json({error:"file not found"})
       }else{    
-        const version = { content };
+        const version = { content,createdBy:userid };
         file[0].versions.push(version);
         await file[0].save();
         res.status(200).json({ message: 'File modified successfully' });
@@ -193,6 +207,10 @@ const modifyFile = async (req, res) => {
        
    
 };
+
+
+
+
 
 module.exports = {
     createWorkspace,

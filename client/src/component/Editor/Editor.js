@@ -33,6 +33,7 @@ import Create from "./Create";
 import { Button, Page, Text, Tree } from '@geist-ui/core'
 import { useParams } from "react-router-dom";
 import axiosP from '../../hooks/useAxiosPrivate';
+import History from "./History";
 function CenteredTabs(props) {
   const [value, setValue] = React.useState(0);
 
@@ -57,6 +58,7 @@ export default function App() {
   const [tree, setTree] = useState({})
   const [myfile, setMyfile] = useState({ "path": "" })
   const [showCreateWorkspace, setShowCreateWorkspace] = useState(false);
+  const [showhistory,setShowHistory]=useState(false)
   const { id } = useParams()
   console.log(id)
   const axios = axiosP()
@@ -88,10 +90,10 @@ export default function App() {
 
 
   function handleFile(p) {
-    let e=p.path
-   let id=p.id
+    let e = p.path
+    let id = p.id
     console.log(p)
-    setMyfile({ "path": e ,"id":id})
+    setMyfile({ "path": e, "id": id })
 
     const a1 = e.split('/');
     console.log(a1)
@@ -144,7 +146,7 @@ export default function App() {
 
     const it3 = tree1.files?.map((item, index) => (
       <>
-        <TreeItem onClick={() => handleFile({path:item?.path,id:item?._id})} key={Math.random()} nodeId={Math.random()} label={<div className="text-xl font-semibold m-2"><DataObjectIcon style={{ fontSize: '5vh' }} />{item.name}</div>}>
+        <TreeItem onClick={() => handleFile({ path: item?.path, id: item?._id })} key={Math.random()} nodeId={Math.random()} label={<div className="text-xl font-semibold m-2"><DataObjectIcon style={{ fontSize: '5vh' }} />{item.name}</div>}>
 
         </TreeItem>
 
@@ -165,7 +167,7 @@ export default function App() {
 
   async function handleSave() {
     try {
-      const res = await axios.post('/workspace/modifyfile', { id: id, path: myfile.path,fileId:myfile.id, content: code })
+      const res = await axios.post('/workspace/modifyfile', { id: id, path: myfile.path, fileId: myfile.id, content: code })
       console.log(res)
     } catch (error) {
       console.log(error)
@@ -228,7 +230,7 @@ export default function App() {
           <div style={{ fontSize: '4vh' }} className="flex space-x-4">
             <button className="hover:text-gray-300 mx-2"><FontAwesomeIcon icon={faPlay} /></button>
             <button onClick={handleSave} className="hover:text-gray-300 mx-2"><FontAwesomeIcon icon={faFloppyDisk} /></button>
-            <button className="hover:text-gray-300 mx-2"><HistoryIcon style={{ fontSize: '6vh' }} />  </button>
+            <button onClick={()=>setShowHistory(true)} className="hover:text-gray-300 mx-2"><HistoryIcon style={{ fontSize: '6vh' }} />  </button>
 
           </div>
         </div>
@@ -251,6 +253,7 @@ export default function App() {
         />
 
       </div>
-      {showCreateWorkspace && <Create id={id} set={setShowCreateWorkspace} />}</div>
+      {showCreateWorkspace && <Create id={id} set={setShowCreateWorkspace} />}
+      {showhistory&&<History id={myfile.id} set={setShowHistory}/>}</div>
   );
 }

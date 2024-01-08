@@ -7,6 +7,11 @@ const versionSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user_w',
+        required: true
     }
 });
 
@@ -31,9 +36,11 @@ const fileSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+   
     allowedUserIds: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user_w'
+        ref: 'user_w',
+        required: true
     }]
 });
 
