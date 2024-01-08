@@ -1,5 +1,6 @@
 const workspaceSchema=require('../../model/workspaceSchema');
 const File=require('../../model/fileSchema')
+const changes=require('../Workspace/Changes')
 
 // Create a new workspace
 const createWorkspace = async (req, res) => {
@@ -209,8 +210,39 @@ const modifyFile = async (req, res) => {
 };
 
 
+const getVersionById = async (req, res) => {
+    const { fileId, versionId } = req.body;
+    console.log(req.body)
+    console.log(changes("ram,rama ","ram"))
 
+    try {
+        const file = await File.find({_id:fileId,allowedUserIds:req.userid});
+        console.log(file)
+        if (!file) {
+            return res.status(404).json({ error: 'File not found' });
+        }
 
+        const version = file[0]?.versions.find(v => v._id.toString() === versionId);
+        console.log(version)
+        if (!version) {
+            return res.status(404).json({ error: 'Version not found' });
+        }
+
+        const versionIndex = file[0]?.versions.findIndex(v => v._id.toString() === versionId);
+        const previousVersion = file[0]?.versions[versionIndex - 1];
+        console.log(previousVersion,'prev');
+        console.log(version,'nov')
+        console.log(changes(version?.content,previousVersion?.content))
+if(versionIndex===0){
+        res.status(200).json({ version });
+}else{
+    res.status(200).json({changes:[changes(previousVersion?.content,version?.content) ]});
+}
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
 module.exports = {
     createWorkspace,
@@ -218,5 +250,12 @@ module.exports = {
     modifyFile,
     fetchWorkspaceNamesWithVisibility,
     getDocuments,
-    fetchFile
+    fetchFile,
+    getVersionById
 };
+
+
+
+
+
+
