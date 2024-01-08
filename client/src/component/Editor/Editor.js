@@ -10,12 +10,12 @@ import Fab from '@mui/material/Fab';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import AddIcon from '@mui/icons-material/Add';
-
+import FolderIcon from '@mui/icons-material/Folder';
 import Label from '@mui/icons-material/Label';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
+import HistoryIcon from '@mui/icons-material/History';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
@@ -131,7 +131,7 @@ export default function App() {
     console.log(It)
     const it2 = tree1.folders?.map((item, index) => (
       <>
-               <TreeItem  key={Math.random()} nodeId={Math.random()} label={<div className="text-xl font-semibold"><CloudDoneIcon className="m-2" style={{ fontSize: '5vh' }}/>{item.name}</div>}>
+        <TreeItem key={Math.random()} nodeId={Math.random()} label={<div className="text-xl font-semibold"><FolderIcon className="m-2" style={{ fontSize: '5vh' }} />{item.name}</div>}>
           <View tree1={item} />
         </TreeItem>
       </>
@@ -140,10 +140,10 @@ export default function App() {
 
     const it3 = tree1.files?.map((item, index) => (
       <>
-         <TreeItem  onClick={() => handleFile(item?.path)} key={Math.random()} nodeId={Math.random()} label={<div className="text-xl font-semibold m-2"><DataObjectIcon style={{ fontSize: '5vh' }}/>{item.name}</div>}>
-         
+        <TreeItem onClick={() => handleFile(item?.path)} key={Math.random()} nodeId={Math.random()} label={<div className="text-xl font-semibold m-2"><DataObjectIcon style={{ fontSize: '5vh' }} />{item.name}</div>}>
+
         </TreeItem>
-    
+
         {/* Render file-related content here */}
       </>
     ));
@@ -151,10 +151,10 @@ export default function App() {
 
     return (
       <>
-       
-          {it2}
-          {it3}
-      
+
+        {it2}
+        {it3}
+
       </>
     );
   }
@@ -178,19 +178,19 @@ export default function App() {
 
         {tb === 0 && <div className="relative  border-gray-900"> <div className=" overflow-y-auto">
           <div style={{ height: '79vh' }}>
-          <TreeView
-    
-        aria-label="gmail"
-        defaultExpanded={['3']}
-        defaultCollapseIcon={<><ExpandMoreIcon style={{marginLeft:'3vh', fontSize: '5vh' }} /></>}
-        defaultExpandIcon={<><ChevronRightIcon style={{marginLeft:'3vh', fontSize: '5vh' }} /></>}
-        defaultEndIcon={<div style={{ width: 24 }} />}
-        
-        sx={{ fontSize: '32px' , height: '79vh', flexGrow: 1 ,maxWidth: 400, overflowY: 'auto' }}
-      >
-            <View tree1={tree.fileTree}>
+            <TreeView
 
-            </View>
+              aria-label="gmail"
+              defaultExpanded={['3']}
+              defaultCollapseIcon={<><ExpandMoreIcon style={{ marginLeft: '3vh', fontSize: '5vh' }} /></>}
+              defaultExpandIcon={<><ChevronRightIcon style={{ marginLeft: '3vh', fontSize: '5vh' }} /></>}
+              defaultEndIcon={<div style={{ width: 24 }} />}
+
+              sx={{ fontSize: '32px', height: '79vh', flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+            >
+              <View tree1={tree.fileTree}>
+
+              </View>
             </TreeView>
             <div className="flex justify-center ">
               <Box className='absolute bottom-4 right-4' sx={{ '& > :not(style)': { m: 1 } }}>
@@ -224,7 +224,7 @@ export default function App() {
           <div style={{ fontSize: '4vh' }} className="flex space-x-4">
             <button className="hover:text-gray-300 mx-2"><FontAwesomeIcon icon={faPlay} /></button>
             <button onClick={handleSave} className="hover:text-gray-300 mx-2"><FontAwesomeIcon icon={faFloppyDisk} /></button>
-            <button className="hover:text-gray-300 mx-2">Edit  </button>
+            <button className="hover:text-gray-300 mx-2"><HistoryIcon style={{ fontSize: '6vh' }} />  </button>
 
           </div>
         </div>
