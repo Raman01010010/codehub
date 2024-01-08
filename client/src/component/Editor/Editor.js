@@ -7,12 +7,16 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Fab from '@mui/material/Fab';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import AddIcon from '@mui/icons-material/Add';
 
 import Label from '@mui/icons-material/Label';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import DataObjectIcon from '@mui/icons-material/DataObject';
@@ -127,26 +131,18 @@ export default function App() {
     console.log(It)
     const it2 = tree1.folders?.map((item, index) => (
       <>
-               <StyledTreeItem nodeId="3" labelText={item.name} labelIcon={CloudDoneIcon}>
+               <TreeItem  key={Math.random()} nodeId={Math.random()} label={<div className="text-xl font-semibold"><CloudDoneIcon className="m-2" style={{ fontSize: '5vh' }}/>{item.name}</div>}>
           <View tree1={item} />
-        </StyledTreeItem>
+        </TreeItem>
       </>
     ));
 
 
     const it3 = tree1.files?.map((item, index) => (
       <>
-         <StyledTreeItem
-            nodeId={Math.random()}
-            labelText={item.name}
-            labelIcon={DataObjectIcon}
-            labelInfo="90"
-            color="#1a73e8"
-            bgColor="#e8f0fe"
-            colorForDarkMode="#B8E7FB"
-            bgColorForDarkMode="#071318"
-            onClick={() => handleFile(item?.path)}
-          />
+         <TreeItem  onClick={() => handleFile(item?.path)} key={Math.random()} nodeId={Math.random()} label={<div className="text-xl font-semibold m-2"><DataObjectIcon style={{ fontSize: '5vh' }}/>{item.name}</div>}>
+         
+        </TreeItem>
     
         {/* Render file-related content here */}
       </>
@@ -180,15 +176,17 @@ export default function App() {
       <div className="w-1/3">
         <CenteredTabs set={setTb} />
 
-        {tb === 0 && <div className="relative border-2 border-gray-900"> <div className="overflow-hidden overflow-y-auto">
+        {tb === 0 && <div className="relative  border-gray-900"> <div className=" overflow-y-auto">
           <div style={{ height: '79vh' }}>
           <TreeView
+    
         aria-label="gmail"
         defaultExpanded={['3']}
-        defaultCollapseIcon={<ArrowDropDownIcon />}
-        defaultExpandIcon={<ArrowRightIcon />}
+        defaultCollapseIcon={<><ExpandMoreIcon style={{marginLeft:'3vh', fontSize: '5vh' }} /></>}
+        defaultExpandIcon={<><ChevronRightIcon style={{marginLeft:'3vh', fontSize: '5vh' }} /></>}
         defaultEndIcon={<div style={{ width: 24 }} />}
-        sx={{ height: '79vh', flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+        
+        sx={{ fontSize: '32px' , height: '79vh', flexGrow: 1 ,maxWidth: 400, overflowY: 'auto' }}
       >
             <View tree1={tree.fileTree}>
 
