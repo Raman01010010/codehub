@@ -1,44 +1,25 @@
 import React, { useEffect, useState } from "react";
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import Box from '@mui/material/Box';
 import TreeViewContainer from "./TreeView";
-import Fab from '@mui/material/Fab';
 import modifyFile from './modifyFile';
-import AddIcon from '@mui/icons-material/Add';
-import FolderIcon from '@mui/icons-material/Folder';
-import View from "./View";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import HistoryIcon from '@mui/icons-material/History';
-import { TreeItem } from '@mui/x-tree-view/TreeItem';
-
-import DataObjectIcon from '@mui/icons-material/DataObject';
-import { TreeView } from '@mui/x-tree-view/TreeView';
 import handleSave1 from "./handleSave";
 import fetchTree from "./fetchTree";
 import handleFile from "./handleFile";
-import {
-
-  faFloppyDisk,
-  faPlay,
-
-} from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk, faPlay, } from "@fortawesome/free-solid-svg-icons";
 import Create from "./Create";
-
 import { useParams } from "react-router-dom";
 import axiosP from '../../hooks/useAxiosPrivate';
 import History from "./History";
 import CenteredTabs from "./TabDesign";
 export default function App() {
-  const [code, setCode] = useState(
-    `function add(a, b) {\n  return a + b;\n}`
-  );
+  const [code, setCode] = useState(`function add(a, b) {\n  return a + b;\n}`);
   const [tree, setTree] = useState({})
   const [myfile, setMyfile] = useState({ "path": "" })
   const [showCreateWorkspace, setShowCreateWorkspace] = useState(false);
   const [showhistory, setShowHistory] = useState(false)
+  const [tb, setTb] = useState(0);
   const { id, fid } = useParams()
   console.log(id)
   const axios = axiosP()
@@ -59,14 +40,6 @@ export default function App() {
 
 
 
-
- 
-
-
-
-
-
-  const [tb, setTb] = useState(1);
   const handleSave = async () => {
     try {
       await modifyFile(axios, id, myfile.path, myfile.id, code);
@@ -79,25 +52,13 @@ export default function App() {
 
   return (
     <div className="flex  ">
-
-
-
       <div className="w-1/3">
         <CenteredTabs set={setTb} />
-
-        {tb === 0 && <TreeViewContainer tree={tree} handleFile={handleFile} setMyfile={setMyfile} setCode={setCode} setShowCreateWorkspace={setShowCreateWorkspace} />
-        }
-
+        {tb === 0 && <TreeViewContainer tree={tree} handleFile={handleFile} setMyfile={setMyfile} setCode={setCode} setShowCreateWorkspace={setShowCreateWorkspace} />}
         {tb === 1 && <div className="bg-gray-700 border border-gray-900  rounded-bl-lg h-full">
 
           <textarea className="w-full p-4 text-2xl text-white bg-gray-700" placeholder="Enter Input"></textarea>
         </div>}
-
-
-
-
-
-
       </div>
       <div className="flex-col-2 w-full lg:w-2/2 flex-wrap ">
         <div className="flex  rounded-tr-lg border border-gray-900  bg-gray-900 text-white p-3 flex items-center justify-between">
