@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import KeyboardAltIcon from '@mui/icons-material/KeyboardAlt';
+
 import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+
 import Fab from '@mui/material/Fab';
 
 import AddIcon from '@mui/icons-material/Add';
@@ -20,7 +18,7 @@ import DataObjectIcon from '@mui/icons-material/DataObject';
 import { TreeView } from '@mui/x-tree-view/TreeView';
 import handleSave1 from "./handleSave";
 import fetchTree from "./fetchTree";
-
+import handleFile from "./handleFile";
 import {
 
   faFloppyDisk,
@@ -40,69 +38,29 @@ export default function App() {
   const [tree, setTree] = useState({})
   const [myfile, setMyfile] = useState({ "path": "" })
   const [showCreateWorkspace, setShowCreateWorkspace] = useState(false);
-  const [showhistory,setShowHistory]=useState(false)
-  const { id,fid } = useParams()
+  const [showhistory, setShowHistory] = useState(false)
+  const { id, fid } = useParams()
   console.log(id)
   const axios = axiosP()
   useEffect(() => {
     // Pass axios instance as a parameter
     handleSave1(fid, axios, setCode);
-}, [fid]);
+  }, [fid]);
 
 
-useEffect(() => {
-  const fetchData = async () => {
+  useEffect(() => {
+    const fetchData = async () => {
       // Pass axios instance as a parameter
       await fetchTree(id, axios, setTree);
-  };
+    };
 
-  fetchData();
-}, [id, myfile]);
-
-
+    fetchData();
+  }, [id, myfile]);
 
 
 
-  function handleFile(p) {
-    let e = p.path
-    let id = p.id
-    console.log(p)
-    setMyfile({ "path": e, "id": id })
 
-    const a1 = e.split('/');
-    console.log(a1)
-    console.log(e)
-    let a2 = tree.fileTree;
-    console.log(a2)
-    if (a1.length === 1) {
-      const a3 = a2.files.find((item) => item.name === a1[0]);
-      console.log(a3)
-      if (a3?.versions?.length === 0) {
-        setCode('//Start Typing')
-      } else {
-        console.log(a3?.versions[a3?.versions?.length - 1]?.content)
-        setCode(a3?.versions[a3?.versions?.length - 1]?.content)
-      }
-      // Perform your logic here for a1 size equal to 1
-    } else {
-      for (let i = 0; i < a1.length - 1; i++) {
-        let a3 = a2.folders.find((item) => item.name === a1[i]);
-        console.log(a3)
-        a2 = a3;
-      }
-      console.log(a2)
-      let a4 = a2?.files?.find((item) => item.name === a1[a1.length - 1]);
-      console.log(a4)
 
-      if (a4?.versions?.length === 0) {
-        setCode('//Start Typing')
-        console.log("cmnvmcv")
-      } else {
-        console.log(a4?.versions[a4?.versions?.length - 1]?.content)
-        setCode(a4?.versions[a4?.versions?.length - 1]?.content)
-      }
-    }
-  }
 
   function View({ tree1 }) {
     if (!tree1) return <div></div>;
@@ -120,8 +78,8 @@ useEffect(() => {
 
     const it3 = tree1.files?.map((item, index) => (
       <>
-        <TreeItem onClick={() => handleFile({ path: item?.path, id: item?._id })} key={Math.random()} nodeId={Math.random()} label={<div className="text-xl font-semibold m-2"><DataObjectIcon style={{ fontSize: '5vh' }} />{item.name}</div>}>
-
+        <TreeItem onClick={() => handleFile({ path: item?.path, id: item?._id }, tree, setMyfile, setCode)} key={Math.random()} nodeId={Math.random()} label={<div className="text-xl font-semibold m-2"><DataObjectIcon style={{ fontSize: '5vh' }} />{item.name}</div>}>
+       
         </TreeItem>
 
         {/* Render file-related content here */}
@@ -204,7 +162,7 @@ useEffect(() => {
           <div style={{ fontSize: '4vh' }} className="flex space-x-4">
             <button className="hover:text-gray-300 mx-2"><FontAwesomeIcon icon={faPlay} /></button>
             <button onClick={handleSave} className="hover:text-gray-300 mx-2"><FontAwesomeIcon icon={faFloppyDisk} /></button>
-            <button onClick={()=>setShowHistory(true)} className="hover:text-gray-300 mx-2"><HistoryIcon style={{ fontSize: '6vh' }} />  </button>
+            <button onClick={() => setShowHistory(true)} className="hover:text-gray-300 mx-2"><HistoryIcon style={{ fontSize: '6vh' }} />  </button>
 
           </div>
         </div>
@@ -228,6 +186,6 @@ useEffect(() => {
 
       </div>
       {showCreateWorkspace && <Create id={id} set={setShowCreateWorkspace} />}
-      {showhistory&&<History id={myfile.id} set={setShowHistory}/>}</div>
+      {showhistory && <History id={myfile.id} set={setShowHistory} />}</div>
   );
 }
