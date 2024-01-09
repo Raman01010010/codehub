@@ -3,7 +3,7 @@ import CodeEditor from '@uiw/react-textarea-code-editor';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Box from '@mui/material/Box';
-
+import TreeViewContainer from "./TreeView";
 import Fab from '@mui/material/Fab';
 import modifyFile from './modifyFile';
 import AddIcon from '@mui/icons-material/Add';
@@ -85,34 +85,8 @@ export default function App() {
       <div className="w-1/3">
         <CenteredTabs set={setTb} />
 
-        {tb === 0 && <div className="relative  border-gray-900"> <div className=" overflow-y-auto">
-          <div style={{ height: '79vh' }}>
-            <TreeView
-
-              aria-label="gmail"
-              defaultExpanded={['3']}
-              defaultCollapseIcon={<><ExpandMoreIcon style={{ marginLeft: '3vh', fontSize: '5vh' }} /></>}
-              defaultExpandIcon={<><ChevronRightIcon style={{ marginLeft: '3vh', fontSize: '5vh' }} /></>}
-              defaultEndIcon={<div style={{ width: 24 }} />}
-
-              sx={{ fontSize: '32px', height: '79vh', flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-            >
-              <View tree1={tree.fileTree}  handleFile={handleFile} tree={tree} setMyfile={setMyfile} setCode={setCode}>
-
-              </View>
-            </TreeView>
-            <div className="flex justify-center ">
-              <Box className='absolute bottom-4 right-4' sx={{ '& > :not(style)': { m: 1 } }}>
-                <Fab onClick={() => setShowCreateWorkspace(true)} size="big" color="secondary" aria-label="add">
-                  <AddIcon />
-                </Fab>
-              </Box>
-            </div>
-          </div>
-
-
-        </div>
-        </div>}
+        {tb === 0 && <TreeViewContainer tree={tree} handleFile={handleFile} setMyfile={setMyfile} setCode={setCode} setShowCreateWorkspace={setShowCreateWorkspace} />
+        }
 
         {tb === 1 && <div className="bg-gray-700 border border-gray-900  rounded-bl-lg h-full">
 
