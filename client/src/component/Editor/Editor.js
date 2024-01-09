@@ -21,7 +21,8 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import { TreeView } from '@mui/x-tree-view/TreeView';
-
+import handleSave1 from "./handleSave";
+import fetchTree from "./fetchTree";
 import StyledTreeItem from './StyledTree'
 import {
 
@@ -59,31 +60,23 @@ export default function App() {
   const [myfile, setMyfile] = useState({ "path": "" })
   const [showCreateWorkspace, setShowCreateWorkspace] = useState(false);
   const [showhistory,setShowHistory]=useState(false)
-  const { id } = useParams()
+  const { id,fid } = useParams()
   console.log(id)
   const axios = axiosP()
   useEffect(() => {
-
-    const f = async () => {
-      const url = 'https://example.com/workspace/gettree';
-
-
-      await axios.post('/workspace/getall', { id: id })
-        .then(response => {
-          // Handle the response here
-          console.log(response.data);
-          setTree(response.data[0])
-
-        })
-        .catch(error => {
-          // Handle the error here
-          console.error(error);
-        });
+    // Pass axios instance as a parameter
+    handleSave1(fid, axios, setCode);
+}, [fid]);
 
 
-    }
-    f()
-  }, [myfile])
+useEffect(() => {
+  const fetchData = async () => {
+      // Pass axios instance as a parameter
+      await fetchTree(id, axios, setTree);
+  };
+
+  fetchData();
+}, [id, myfile]);
 
 
 

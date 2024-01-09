@@ -77,7 +77,7 @@ ans()
         console.log("success")
         console.log(response)
         setShowCreateWorkspace(false);
-        navigate(`/workspace/${response.data.workspace._id}`)
+        navigate(`/workspace/${response.data.workspace._id}/1`)
 
       }
       return response.data;
@@ -97,7 +97,7 @@ ans()
   };
 
   function handNav(id){
-    navigate(`/workspace/${id}`)
+    navigate(`/workspace/${id}/1`)
   }
   return (
     <div style={{ display: 'flex', height: '90vh', overflowX: 'hidden' }}>

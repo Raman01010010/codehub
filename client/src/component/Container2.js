@@ -12,7 +12,7 @@ export default function Container1(){
           <Routes>
 
           <Route path="/" element={<><Home/></>} />
-          <Route path="/workspace/:id" element={<>  <Edito/></>} />
+          <Route path="/workspace/:id/:fid" element={<>  <Edito/></>} />
           <Route path="/my" element={<>  <Create/></>} />
           <Route path="/signin" element={<><Signin/></>} />
     </Routes>
