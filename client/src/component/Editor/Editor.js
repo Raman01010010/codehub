@@ -7,51 +7,32 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Fab from '@mui/material/Fab';
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import CloudDoneIcon from '@mui/icons-material/CloudDone';
+
 import AddIcon from '@mui/icons-material/Add';
 import FolderIcon from '@mui/icons-material/Folder';
-import Label from '@mui/icons-material/Label';
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import HistoryIcon from '@mui/icons-material/History';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import { TreeView } from '@mui/x-tree-view/TreeView';
 import handleSave1 from "./handleSave";
 import fetchTree from "./fetchTree";
-import StyledTreeItem from './StyledTree'
+
 import {
 
   faFloppyDisk,
   faPlay,
-  faPlus
+
 } from "@fortawesome/free-solid-svg-icons";
 import Create from "./Create";
-import { Button, Page, Text, Tree } from '@geist-ui/core'
+
 import { useParams } from "react-router-dom";
 import axiosP from '../../hooks/useAxiosPrivate';
 import History from "./History";
-function CenteredTabs(props) {
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  return (
-    <Box sx={{ width: '100%', bgcolor: 'text.primary' }} >
-      <Tabs value={value} onChange={handleChange} centered>
-        <Tab onClick={() => props.set(0)} style={{ color: 'white' }} label={<AccountTreeIcon style={{ fontSize: '7vh' }} />} />
-        <Tab onClick={() => props.set(1)} style={{ color: 'white' }} label={<KeyboardAltIcon style={{ fontSize: '7vh' }} className="mr-2 " />} />
-        <Tab onClick={() => props.set(2)} style={{ color: 'white' }} label="Item Three" />
-      </Tabs>
-    </Box>
-  );
-}
+import CenteredTabs from "./TabDesign";
 export default function App() {
   const [code, setCode] = useState(
     `function add(a, b) {\n  return a + b;\n}`
