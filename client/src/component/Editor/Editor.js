@@ -25,6 +25,7 @@ export default function App() {
   const axios = axiosP()
   useEffect(() => {
     // Pass axios instance as a parameter
+    setMyfile({ id: fid })
     handleSave1(fid, axios, setCode);
   }, [fid]);
 

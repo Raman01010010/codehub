@@ -152,7 +152,9 @@ workspace[0].fileTree=populatedWorkspace
 const fetchFile = async (req, res) => {
   //  console.log(path);
   console.log(req.body)
+
     const userid = req.userid;
+    console.log(userid,'file dedo')
     const id = req.body.id;
 
     console.log(id)
@@ -166,11 +168,12 @@ const fetchFile = async (req, res) => {
             // You can perform additional actions here if needed
             res.status(200).json({ message: 'Document found', data: result });
         } else {
+            console.log(result,req.body)
             // No document found
             res.status(404).json({ message: 'Document not found' });
         }
     } catch (error) {
-        console.log(error);
+        console.log(error,'nnnn');
         res.status(500).json({ error: 'Internal Server Error' });
     }
     
@@ -189,10 +192,10 @@ const modifyFile = async (req, res) => {
         // req.body.isFile || false;
     
         // Validate input
-        if (!workspaceId || !itemPath||!fileId) {
+        if (!workspaceId ||!fileId) {
             return res.status(400).json({ error: 'Invalid input' });
         }
-    const file=await File.find({_id:fileId,path:itemPath,workpaceId:workspaceId})
+    const file=await File.find({_id:fileId,workpaceId:workspaceId,allowedUserIds:userid})
       console.log(file)
       if(file.length===0){
           return res.status(400).json({error:"file not found"})
