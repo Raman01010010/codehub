@@ -8,7 +8,7 @@ import Fab from '@mui/material/Fab';
 
 import AddIcon from '@mui/icons-material/Add';
 import FolderIcon from '@mui/icons-material/Folder';
-
+import View from "./View";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import HistoryIcon from '@mui/icons-material/History';
@@ -62,40 +62,7 @@ export default function App() {
 
 
 
-  function View({ tree1 }) {
-    if (!tree1) return <div></div>;
-    // console.log(tree1)
-    const It = tree1.name;
-    console.log(It)
-    const it2 = tree1.folders?.map((item, index) => (
-      <>
-        <TreeItem key={Math.random()} nodeId={Math.random()} label={<div className="text-xl font-semibold"><FolderIcon className="m-2" style={{ fontSize: '5vh' }} />{item.name}</div>}>
-          <View tree1={item} />
-        </TreeItem>
-      </>
-    ));
-
-
-    const it3 = tree1.files?.map((item, index) => (
-      <>
-        <TreeItem onClick={() => handleFile({ path: item?.path, id: item?._id }, tree, setMyfile, setCode)} key={Math.random()} nodeId={Math.random()} label={<div className="text-xl font-semibold m-2"><DataObjectIcon style={{ fontSize: '5vh' }} />{item.name}</div>}>
-       
-        </TreeItem>
-
-        {/* Render file-related content here */}
-      </>
-    ));
-
-
-    return (
-      <>
-
-        {it2}
-        {it3}
-
-      </>
-    );
-  }
+ 
 
   async function handleSave() {
     try {
@@ -126,7 +93,7 @@ export default function App() {
 
               sx={{ fontSize: '32px', height: '79vh', flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
             >
-              <View tree1={tree.fileTree}>
+              <View tree1={tree.fileTree}  handleFile={handleFile} tree={tree} setMyfile={setMyfile} setCode={setCode}>
 
               </View>
             </TreeView>
