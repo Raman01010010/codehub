@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Box from '@mui/material/Box';
 
 import Fab from '@mui/material/Fab';
-
+import modifyFile from './modifyFile';
 import AddIcon from '@mui/icons-material/Add';
 import FolderIcon from '@mui/icons-material/Folder';
 import View from "./View";
@@ -60,19 +60,23 @@ export default function App() {
 
 
 
-
-
  
 
-  async function handleSave() {
-    try {
-      const res = await axios.post('/workspace/modifyfile', { id: id, path: myfile.path, fileId: myfile.id, content: code })
-      console.log(res)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+
+
+
+
   const [tb, setTb] = useState(1);
+  const handleSave = async () => {
+    try {
+      await modifyFile(axios, id, myfile.path, myfile.id, code);
+    } catch (error) {
+      // Handle the error as needed
+      console.error('Error while saving:', error);
+    }
+  };
+
+
   return (
     <div className="flex  ">
 
