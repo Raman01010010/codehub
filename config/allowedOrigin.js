@@ -13,6 +13,6 @@ const allowedOrigin=[
     'careersync.free.nf',
     'http://careersync.free.nf',
     'http://socketrmn1.epizy.com',
-    'https://source-scroll.netlify.app'
+    'https://source-scroll.netlify.app/'
 ]
 module.exports=allowedOrigin
