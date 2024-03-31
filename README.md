@@ -1,6 +1,6 @@
 <h1 align="center" id="title">Connexa</h1>
 
-<p align="center"><img src="https://socialify.git.ci/Raman01010010/webster/image?font=Raleway&amp;language=1&amp;name=1&amp;owner=1&amp;stargazers=1&amp;theme=Dark" alt="project-image"></p>
+
 
 <p id="description">SourceScroll: AWorkpace to track your history.</p>
 
@@ -84,8 +84,6 @@ Technologies used in the project:
 *   mongoDB
 *   OAuth
 *   Tailwind
-*   webRTC
-*   socket.io
 
 <h2>🛡️ Deployment</h2>
 
