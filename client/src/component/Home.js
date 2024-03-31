@@ -12,13 +12,10 @@ export default function Home(){
       <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
         Welcome to 
         <br className="hidden lg:inline-block" />
-       BE BOP
+        SourceScroll
       </h1>
       <p className="mb-8 leading-relaxed">
-        Copper mug try-hard pitchfork pour-over freegan heirloom neutra air
-        plant cold-pressed tacos poke beard tote bag. Heirloom echo park mlkshk
-        tote bag selvage hot chicken authentic tumeric truffaut hexagon try-hard
-        chambray.
+      Welcome to SourceScroll – where every line of code tells a story. Dive into a seamless journey through your project's history, effortlessly navigating revisions and exploring the evolution of your codebase. With SourceScroll, your code's narrative unfolds at your fingertips, empowering you to trace, understand, and shape its trajectory like never before. Start your coding odyssey today and unravel the tale behind every commit
       </p>
       <div className="flex justify-center">
         <button className="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">

@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Container2 from "./Container2";
 import Modal from "@mui/material/Modal";
+
 import { Backdrop, Fade } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
@@ -189,18 +190,21 @@ async function handleLogout() {
              SAMPLE NAME
               </Typography>
 
-              <Button color="inherit" onClick={handleOpenModal}>
-                <FontAwesomeIcon icon={faSearch} />
-              </Button>
+              
 
-              <Button color="inherit" component={Link} to="/post">
+              <Button color="inherit" component={Link} to="/home">
                 <FontAwesomeIcon icon={faHome} style={{ marginRight: "5px" }} />
                 Home
               </Button>
-              <Button color="inherit" onClick={fun} component={Link}>
+            
+              <Button color="inherit"  component={Link}>
+              <Link to='./my'>
                 <FontAwesomeIcon icon={faBell} style={{ marginRight: "5px" }} />
-                Notification
+                
+               MY Workspace
+               </Link>
               </Button>
+              
 
               <Button color="inherit" onClick={handleMenuOpen}>
                 <FontAwesomeIcon
@@ -258,68 +262,22 @@ async function handleLogout() {
           ) : (
             <>
               {/* ... (unchanged code) */}
+              
+              
+         
+              <Link to='./my'>
               <IconButton
                 color="inherit"
                 style={{ marginRight: "20px" }}
                 component={Link}
-                to="/post"
+                to="/my"
               >
+               
                 <FontAwesomeIcon icon={faHome} />
               </IconButton>
-              <Button color="inherit" onClick={handleOpenModal}>
-                <FontAwesomeIcon icon={faSearch} />
-              </Button>
-              <IconButton
-                onClick={fun}
-                color="inherit"
-                style={{ marginRight: "20px" }}
-                component={Link}
-              >
-                <FontAwesomeIcon icon={faHome} />
-              </IconButton>
-
-              <IconButton
-                color="inherit"
-                onClick={handleMenuOpen}
-                style={{ marginRight: "20px" }}
-              >
-                <FontAwesomeIcon icon={faUserFriends} />
-              </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleMenuClose}
-              >
-                <MenuItem
-                  onClick={handleMenuClose}
-                  component={Link}
-                  to="/connections"
-                >
-                  SW1
-                </MenuItem>
-                <MenuItem
-                  onClick={handleMenuClose}
-                  component={Link}
-                  to="/otherusers"
-                >
-                  S2
-                </MenuItem>
-                <MenuItem
-                  onClick={handleNavAndClose}
-                  component={Link}
-                  to="/pending"
-                >
-                  S3
-                </MenuItem>
-              </Menu>
-              <IconButton
-                color="inherit"
-                style={{ marginRight: "20px" }}
-                component={Link}
-                to={`/chat/${newUser.userid}`}
-              >
-                <FontAwesomeIcon icon={faEnvelope} />
-              </IconButton>
+              </Link>
+            
+            
             
               <IconButton
                 color="inherit"
