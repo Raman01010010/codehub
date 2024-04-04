@@ -31,10 +31,10 @@ app.use(cookieParser())
 app.use('/user',require('./routes/user'))
 app.use('/auth',require('./routes/auth'))
 app.use('/refresh',require('./routes/refresh'))
-app.use(verifyJWT)
+
 app.use('/user1',require('./routes/userUpdate'))
 app.use('/workspace',require('./routes/workSpace'))
-
+app.use(verifyJWT)
 app.all('/*',(req,res)=>{
     res.status(404)
     if(req.accepts('html')){
